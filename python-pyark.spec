@@ -389,9 +389,13 @@ See the `LICENSE`_ file.
 %install
 %if 0%{?with_python2}
 %py2_install
+%{__mv} $RPM_BUILD_ROOT%{_bindir}/pyark $RPM_BUILD_ROOT%{_bindir}/pyark2
+%{__ln_s} pyark2 $RPM_BUILD_ROOT%{_bindir}/pyark
 %endif # with_python2
 %if 0%{?with_python3}
 %py3_install
+%{__mv} $RPM_BUILD_ROOT%{_bindir}/pyark $RPM_BUILD_ROOT%{_bindir}/pyark3
+%{__ln_s} pyark3 $RPM_BUILD_ROOT%{_bindir}/pyark
 %endif # with_python3
 
 %clean
@@ -401,12 +405,18 @@ rm -rf %{buildroot}
 %files -n python2-pyark
 %defattr(-,root,root,-)
 %{python2_sitelib}/*
+%{_bindir}/pyark2
+%if ! 0%{with_python3}
+%{_bindir}/pyark
+%endif
 %endif # with_python2
 
 %if 0%{with_python3}
 %files -n python3-pyark
 %defattr(-,root,root,-)
 %{python3_sitelib}/*
+%{_bindir}/pyark3
+%{_bindir}/pyark
 %endif # with_python3
 
 %changelog
